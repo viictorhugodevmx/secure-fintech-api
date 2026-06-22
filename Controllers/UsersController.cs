@@ -18,7 +18,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "AdminOnly")]
     public ActionResult<ApiResponse<List<UserResponseDto>>> GetUsers()
     {
         List<UserResponseDto> users = _userService.GetUsers();
@@ -30,7 +30,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{email}")]
-    [Authorize(Roles = "Admin,Analyst")]
+    [Authorize(Policy = "AnalystOrAdmin")]
     public ActionResult<ApiResponse<UserResponseDto>> GetUserByEmail(string email)
     {
         UserResponseDto? user = _userService.GetUserByEmail(email);

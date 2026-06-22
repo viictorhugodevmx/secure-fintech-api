@@ -38,7 +38,17 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+
+    options.AddPolicy("AnalystOrAdmin", policy =>
+        policy.RequireRole("Admin", "Analyst"));
+
+    options.AddPolicy("CustomerOnly", policy =>
+        policy.RequireRole("Customer"));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
