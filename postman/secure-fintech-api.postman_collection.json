@@ -1,0 +1,28 @@
+{
+  "info": {
+    "name": "secure-fintech-api",
+    "_postman_id": "6e5a87aa-6f1f-42f8-9e30-000000000000",
+    "description": "Postman collection for Secure Fintech API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health - Get API status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5214"
+    }
+  ]
+}
