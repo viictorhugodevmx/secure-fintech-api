@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecureFintechApi.Dtos;
 using SecureFintechApi.Models;
@@ -48,6 +50,24 @@ public class AuthController : ControllerBase
         return Ok(ApiResponse<LoginResponseDto>.Ok(
             result.Data!,
             result.Message
+        ));
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public ActionResult<ApiResponse<CurrentUserResponseDto>> GetCurrentUser()
+    {
+        CurrentUserResponseDto currentUser = new CurrentUserResponseDto
+        {
+            UserId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty,
+            FullName = User.FindFirstValue(ClaimTypes.Name) ?? string.Empty,
+            Email = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty,
+            Role = User.FindFirstValue(ClaimTypes.Role) ?? string.Empty
+        };
+
+        return Ok(ApiResponse<CurrentUserResponseDto>.Ok(
+            currentUser,
+            "Current user retrieved successfully."
         ));
     }
 }
