@@ -7,10 +7,15 @@ namespace SecureFintechApi.Services;
 public class AuthService
 {
     private readonly UserService _userService;
+    private readonly JwtTokenService _jwtTokenService;
 
-    public AuthService(UserService userService)
+    public AuthService(
+        UserService userService,
+        JwtTokenService jwtTokenService
+    )
     {
         _userService = userService;
+        _jwtTokenService = jwtTokenService;
     }
 
     public OperationResult<LoginResponseDto> Login(LoginRequestDto request)
@@ -44,8 +49,8 @@ public class AuthService
             FullName = user.FullName,
             Email = user.Email,
             Role = user.Role,
-            Token = $"mock-token-{user.Role}-{Guid.NewGuid()}",
-            ExpiresAtUtc = DateTime.UtcNow.AddHours(1)
+            Token = _jwtTokenService.GenerateToken(user),
+            ExpiresAtUtc = _jwtTokenService.GetExpirationDate()
         };
 
         return OperationResult<LoginResponseDto>.Ok(
